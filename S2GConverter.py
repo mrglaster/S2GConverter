@@ -186,8 +186,14 @@ def get_materials(path_to_model):
             lines = vmt_file.readlines()
             for j in lines:
                 if '"$basetexture"' in j.lower():
+                    print(j.lower())
                     texture_name = ''
-                    basetexture_line = j.split(' ')[1]
+                    btx = j.split(' ')
+                    for p in range(1, len(btx)):
+                        basetexture_line = ''
+                        if '"$basetexture"' in btx[p-1]:
+                            basetexture_line = btx[p]
+                            break
                     for k in range(len(basetexture_line)-1, 0, -1):
                         if basetexture_line[k]!='/' and basetexture_line[k]!='\\':
                             texture_name = basetexture_line[k]+texture_name
