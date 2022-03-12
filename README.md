@@ -37,7 +37,7 @@ There are two situations yet, when the model can't be converted. These are:
  
  ## Credits and Links
  
- 1) Дядя Миша as the author of used in this project studiomdl.exe https://hlfx.ru/forum/showthread.php?s=&threadid=5237
+ 1) Дядя Миша's studiomdl.exe https://hlfx.ru/forum/showthread.php?s=&threadid=5237
  2) VTFLib - https://nemstools.github.io/subpages/Comments/VTFEdit_v1.3.3_Full-page2.html#p238
  3) Sources of models demonstrated here
     1) Serious Sam 2 SWEPS: https://steamcommunity.com/sharedfiles/filedetails/?id=503138986
