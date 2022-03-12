@@ -48,6 +48,6 @@ There are two situations yet, when the model can't be converted. These are:
 
 if you have questions about usage / you encounter a model that the utility was unable to process / you have another problems, my contacts are:
 
-1) E-Main: pristavka_egor@mail.ru
+1) E-Mail: pristavka_egor@mail.ru
 2) Steam: https://steamcommunity.com/id/mrglaster
 3) VK: vk.com/pristavka2013
