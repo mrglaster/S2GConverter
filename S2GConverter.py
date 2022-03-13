@@ -12,13 +12,12 @@ materialist = {}
 
 def pathcheck(path_to_model):
     resultVar = False
+    contains_vtx = False
+    contains_vvd = False
+    contains_vtf = False
+    contains_vmt = False
     if os.path.exists(path_to_model):
         a = os.listdir(os.path.dirname(path_to_model))
-        contains_vtx = False
-        contains_vvd = False
-        contains_vtf = False
-        contains_vmt = False
-
         for i in a:
             if '.vtx' in i:
                 contains_vtx = True
@@ -31,7 +30,12 @@ def pathcheck(path_to_model):
             if contains_vvd and contains_vtx and contains_vtf and contains_vmt:
                 resultVar = True
                 break
+    print("VTX Detected: "+str(contains_vtx))
+    print("VTF Detected: " + str(contains_vtf))
+    print("VMT Detected: " + str(contains_vmt))
+    print("VVD Detected: " + str(contains_vvd))
     return resultVar
+
 
 def next_pow_of_two(x):
     a=math.ceil(math.log(x, 2))
@@ -186,12 +190,11 @@ def get_materials(path_to_model):
             lines = vmt_file.readlines()
             for j in lines:
                 if '"$basetexture"' in j.lower():
-                    print(j.lower())
                     texture_name = ''
                     btx = j.split(' ')
                     for p in range(1, len(btx)):
                         basetexture_line = ''
-                        if '"$basetexture"' in btx[p-1]:
+                        if '"$basetexture"' in btx[p-1] or '"$basetexture"' in btx[p-1].lower() or '"$basetexture"' in btx[p-1].upper():
                             basetexture_line = btx[p]
                             break
                     for k in range(len(basetexture_line)-1, 0, -1):
