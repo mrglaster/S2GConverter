@@ -7,7 +7,7 @@ import shutil
 from PIL import Image
 
 MAX_TRIANGLES_CONST = 500
-TEXTURE_SIZE_CONST = 512
+TEXTURE_SIZE_CONST = 256
 materialist = {}
 
 def pathcheck(path_to_model):
@@ -61,9 +61,15 @@ def resize_textures(path_to_folder):
                     width = int((width/next_pow_of_two(width))*TEXTURE_SIZE_CONST)
                 if height>TEXTURE_SIZE_CONST:
                     height = int((height / next_pow_of_two(height)) * TEXTURE_SIZE_CONST)
+
+                if height>TEXTURE_SIZE_CONST:
+                    height = TEXTURE_SIZE_CONST
+                if width>TEXTURE_SIZE_CONST:
+                    width = TEXTURE_SIZE_CONST
                 picture = picture.resize((width, height))
                 picture = picture.quantize(colors=256, method=2)
                 picture.save(path_to_folder+'\\'+i)
+
 
 def read_smd_header(path_to_smd):
     header = []
@@ -224,6 +230,7 @@ def find_animsfolder(path_to_model):
 
 
 
+
 def convert_model(path_to_model):
     source_direction = os.getcwd()
     smd_direction = os.path.dirname(path_to_model) + '\\'
@@ -268,6 +275,7 @@ def convert_model(path_to_model):
         submodels_partnames = []
         submodels_counter = 0
         start_triangle_section = 'triangles'
+
         for smd_file in smd_references:
             triangle_section_written = False
             if os.path.exists(smd_file):
@@ -289,13 +297,12 @@ def convert_model(path_to_model):
                         submodels_counter) + ".smd"
                     local_partnames.append(partfile[:len(partfile) - 4])
                     f = open(partfile, "w")
+                    if 'triangles' not in header:
+                        header.append('triangles')
                     for header_line in header:
                         f.write(header_line)
                         f.write('\n')
-                    if not triangle_section_written:
-                        f.write(start_triangle_section)
-                        f.write('\n')
-                        triangles_written = True
+
                     for verticle in range(0, ppt[part]):
                         writing_data = verticle_data[verticle]
                         for s in range(0, len(writing_data)):
@@ -338,7 +345,8 @@ def convert_model(path_to_model):
             shutil.copy(source_direction + '\\' + 'studiomdl.exe', os.getcwd())
             arguments = "studiomdl.exe " + qc_file
             subprocess.call(arguments)
-
+    else:
+        print("We didn't find all required resources. Are you sure you have .vtf(s), .vmt(s), .vtx, .vvd, .mdl ")
 
 def fix_header(header):
     for i in range(0, len(header)):
