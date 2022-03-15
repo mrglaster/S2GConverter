@@ -200,7 +200,7 @@ def get_materials(path_to_model):
                     btx = j.split(' ')
                     for p in range(1, len(btx)):
                         basetexture_line = ''
-                        if '"$basetexture"' in btx[p-1] or '"$basetexture"' in btx[p-1].lower() or '"$basetexture"' in btx[p-1].upper():
+                        if 'basetexture' in btx[p-1] or 'basetexture' in btx[p-1].lower() or 'basetexture' in btx[p-1].upper():
                             basetexture_line = btx[p]
                             break
                     for k in range(len(basetexture_line)-1, 0, -1):
