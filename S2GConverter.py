@@ -188,6 +188,7 @@ def find_smd_reference(path_to_model):
     return smd_reference
 
 def get_materials(path_to_model):
+    basetexture_line = ''
     print("Analyzing .vmt files")
     files = os.listdir(os.path.dirname(path_to_model) + '\\')
     for i in files:
