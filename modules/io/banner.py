@@ -1,5 +1,4 @@
 import os
-
 import modules.texture_processor.materials_reader
 
 DEFAULT_BANNER_PATH = 'assets/banner.txt'
