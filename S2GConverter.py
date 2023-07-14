@@ -4,6 +4,7 @@ from modules.io.banner import print_banner
 
 
 def main():
+    """The main function"""
     print_banner()
     pass
 
