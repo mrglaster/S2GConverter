@@ -5,7 +5,6 @@ DEFAULT_BANNER_PATH = 'assets/banner.txt'
 
 
 def get_banner_text() -> str:
-    """Reads the banner data from the text file"""
     """Reads the banner from the text file"""
     if not os.path.exists(DEFAULT_BANNER_PATH):
         raise FileNotFoundError("Banner File was not Found! Path to the banner should be ../assets/banner.txt")
