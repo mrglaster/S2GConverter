@@ -68,12 +68,16 @@ def generate_pseudo_normal_map(source_texture: str, normal_map: str) -> None:
             else:
                 background = cv2.resize(background, (ow, oh), interpolation=cv2.INTER_LINEAR)
 
+        path_base = os.path.dirname(source_texture)
+        combined_path = os.path.join(path_base, 'combined.png')
+        combined_result_path = os.path.join(path_base, 'combined_result.png')
+
         added_image = cv2.addWeighted(background, 0.92, overlay, 1, 0)
-        cv2.imwrite('combined.png', added_image)
-        value = delta_brightness(source_texture, 'combined.png')
-        result = change_brightness('combined.png', -1 * value)
-        cv2.imwrite('combined_result.png', result)
-        img_pil = adjust_saturation(Image.open('combined_result.png'), 3)
+        cv2.imwrite(combined_path, added_image)
+        value = delta_brightness(source_texture, combined_path)
+        result = change_brightness(combined_path, -1 * value)
+        cv2.imwrite(combined_result_path, result)
+        img_pil = adjust_saturation(Image.open(combined_result_path), 3)
         clear_pnm_processing_trash()
         reference = np.array(Image.open(source_texture).convert('RGB'))
         content = np.array(img_pil.convert('RGB'))
@@ -100,14 +104,16 @@ def read_base_and_bump_texture(vmt_file_path: str) -> tuple:
             bump_map = val
     if base_texture:
         return vmt_file_path[:-4], base_texture, bump_map
-    raise ValueError(f"Bad VMT File: {vmt_file_path}")
+    print(f"Bad VMT File: {vmt_file_path}")
+    return "", "", ""
 
 
 def get_materials_list(model_folder_path: str) -> dict:
     result = {}
     for file in glob.glob(os.path.join(model_folder_path, "*.vmt")):
         k, base, bump = read_base_and_bump_texture(file)
-        result[os.path.basename(k)] = (base, bump)
+        if k and base and bump:
+            result[os.path.basename(k)] = (base, bump)
     return result
 
 
