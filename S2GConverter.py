@@ -40,11 +40,12 @@ def change_brightness(image_path: str, value: int = 30) -> PIL.Image.Image:
     return img
 
 
-def clear_pnm_processing_trash() -> None:
+def clear_pnm_processing_trash(source_texture_dir: str) -> None:
     for fname in ['combined.png', 'combined_result.png']:
-        if os.path.exists(fname):
-            os.remove(fname)
-    for i in os.listdir():
+        fname_full = os.path.join(source_texture_dir, fname)
+        if os.path.exists(fname_full):
+            os.remove(fname_full)
+    for i in os.listdir(source_texture_dir):
         if 'grayscale' in i and os.path.isfile(i):
             os.remove(i)
 
@@ -78,7 +79,7 @@ def generate_pseudo_normal_map(source_texture: str, normal_map: str) -> None:
         result = change_brightness(combined_path, -1 * value)
         cv2.imwrite(combined_result_path, result)
         img_pil = adjust_saturation(Image.open(combined_result_path), 3)
-        clear_pnm_processing_trash()
+        clear_pnm_processing_trash(os.path.dirname(source_texture))
         reference = np.array(Image.open(source_texture).convert('RGB'))
         content = np.array(img_pil.convert('RGB'))
         result = Image.fromarray(colortrans.transfer_reinhard(content, reference))
@@ -86,7 +87,6 @@ def generate_pseudo_normal_map(source_texture: str, normal_map: str) -> None:
         print(f"Bump texture has been successfully generated for {source_texture}")
     except Exception as e:
         print(f"Error happened during bump texture generation for {source_texture}: {e}")
-
 
 
 def read_base_and_bump_texture(vmt_file_path: str) -> tuple:
@@ -111,9 +111,12 @@ def read_base_and_bump_texture(vmt_file_path: str) -> tuple:
 def get_materials_list(model_folder_path: str) -> dict:
     result = {}
     for file in glob.glob(os.path.join(model_folder_path, "*.vmt")):
+        print(f"Processing VMT file: {file}")
         k, base, bump = read_base_and_bump_texture(file)
-        if k and base and bump:
+        if base:
             result[os.path.basename(k)] = (base, bump)
+        else:
+            print(f"Error during VMT file processing. Values extracted: {k, base, bump}")
     return result
 
 
