@@ -78,5 +78,5 @@ There are two situations yet, when the model can't be converted. These are:
 2) [VTFLib](https://nemstools.github.io/subpages/Comments/VTFEdit_v1.3.3_Full-page2.html#p238)
 3) Sources of models demonstrated here
     1) [Serious Sam 2 SWEPS](https://steamcommunity.com/sharedfiles/filedetails/?id=503138986)
-    2) [DOOM Eternal NPCs]https://steamcommunity.com/sharedfiles/filedetails/?id=2295322924
-    3) [Dark Souls NPCs reworked]https://steamcommunity.com/sharedfiles/filedetails/?id=1254104064  
+    2) [DOOM Eternal NPCs](https://steamcommunity.com/sharedfiles/filedetails/?id=2295322924)
+    3) [Dark Souls NPCs reworked](https://steamcommunity.com/sharedfiles/filedetails/?id=1254104064)  
