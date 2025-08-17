@@ -24,9 +24,21 @@ pip install -r requirements.txt
 
 ### Usage 
 
-1) Before usage you should put model files with extensions ```.vtf```, ```.vmt```, ```.mdl```, and ```.vvd``` to one folder, like shown on image.
 
-<img width="701" height="145" alt="{43287408-2C24-4080-8AC8-828A787B6BEA}" src="https://github.com/user-attachments/assets/8e89d0cf-34ef-422f-90b1-f0e813e0943c" />
+1) Place all required model files in the **same directory**:
+- `.mdl` — Main model file
+- `.vvd` — Vertex data
+- `.vtf` — Textures (VTF format)
+- `.vmt` — Material definition
+
+Example structure:
+```
+/models/my_model/
+├── model.mdl
+├── model.vvd
+├── texture.vtf
+└── texture.vmt
+```
 
 2) Run command
 
