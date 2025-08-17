@@ -112,7 +112,7 @@ def get_materials_list(model_folder_path: str) -> dict:
 
 
 def run_executable(exe_name: str, args: list):
-    exe_path = os.path.join('.', 'utils', exe_name)
+    exe_path = os.path.join(sys.path[0], 'utils', exe_name)
     subprocess.call([exe_path] + args)
 
 
@@ -137,7 +137,8 @@ def next_pow_of_two(x: int) -> int:
 
 
 def convert_to_bmp_folder(path_to_vtf: str):
-    run_executable("VTFCmd.exe", [
+    utility_path = os.path.join(sys.path[0], 'utils', 'VTFCmd.exe')
+    run_executable(utility_path, [
         "-folder", path_to_vtf + (os.sep if not str(path_to_vtf).endswith(os.sep) else ''),
         "-exportformat", "bmp",
         "-format", "A8"
@@ -145,7 +146,8 @@ def convert_to_bmp_folder(path_to_vtf: str):
 
 
 def decompile_model(path_to_model: str):
-    run_executable("cr.exe", [path_to_model])
+    utility_path = os.path.join(sys.path[0], 'utils', 'cr.exe')
+    run_executable(utility_path, [path_to_model])
 
 
 def preprocess_textures(path_to_folder: str, materials: dict, generate_pnmaps: bool):
@@ -281,7 +283,7 @@ def find_smd_reference(path_to_model: str) -> list[str]:
 
 
 def convert_model(path_to_model: str, generate_pnmaps: bool):
-    source_dir = os.getcwd()
+    source_dir = sys.path[0]
     model_folder = os.path.dirname(path_to_model)
 
     materials = get_materials_list(model_folder)
@@ -372,7 +374,7 @@ def convert_model(path_to_model: str, generate_pnmaps: bool):
             f.write(f'$sequence {anim[:-4]} "{anim[:-4]}"\n')
 
     if os.path.exists(qc_file):
-        shutil.copy(os.path.join(source_dir, 'utils', 'studiomdl.exe'), os.getcwd())
+        shutil.copy(os.path.join(source_dir, 'utils', 'studiomdl.exe'), os.path.dirname(qc_file))
         run_executable(os.path.join(os.path.dirname(qc_file), "studiomdl.exe"), [qc_file])
 
 
