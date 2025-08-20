@@ -12,8 +12,11 @@ import os
 import numpy as np
 from PIL import Image, ImageStat, ImageEnhance
 
-MAX_TRIANGLES_CONST = 500
-TEXTURE_SIZE_CONST = 256
+MAX_TRIANGLES_CONST = 2040
+
+TEXTURE_BUFFER_WIDTH = 1024
+TEXTURE_BUFFER_HEIGHT = 512
+
 VMT_FIELDS_PATTERN = r'("([^"]+)"\s+"([^"]+)")'
 
 
@@ -181,15 +184,15 @@ def resize_textures(path_to_folder: str):
         full_path = os.path.join(path_to_folder, fname)
         picture = Image.open(full_path)
         width, height = picture.size
-        if width > TEXTURE_SIZE_CONST:
-            width = int((width / next_pow_of_two(width)) * TEXTURE_SIZE_CONST)
-        if height > TEXTURE_SIZE_CONST:
-            height = int((height / next_pow_of_two(height)) * TEXTURE_SIZE_CONST)
-        width = min(width, TEXTURE_SIZE_CONST)
-        height = min(height, TEXTURE_SIZE_CONST)
-        picture = picture.resize((width, height))
-        picture = picture.quantize(colors=256, method=2)
-        picture.save(full_path)
+        if width > TEXTURE_BUFFER_WIDTH or height > TEXTURE_BUFFER_HEIGHT:
+            scale_w = TEXTURE_BUFFER_WIDTH / width if width > 1024 else 1
+            scale_h = TEXTURE_BUFFER_HEIGHT / height if height > TEXTURE_BUFFER_HEIGHT else 1
+            scale = min(scale_w, scale_h)
+            new_width = int(width * scale)
+            new_height = int(height * scale)
+            picture = picture.resize((new_width, new_height), Image.LANCZOS)
+            picture = picture.quantize(colors=256, method=2)
+            picture.save(full_path)
 
 
 def fix_header(header: list[str]) -> list[str]:
